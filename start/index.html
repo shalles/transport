@@ -9,7 +9,13 @@
 <body>
     <div class="container">
         <div id="receiver" class="receiver"></div>
-        <div id="sender" class="sender"></div>
+        <div id="sender" class="sender">
+            <div class="selector"> 
+                <button type="button">选择文件</button>
+                <div class="file-name"></div>
+                <input id="senderSelector" type="file" multiple class="select">
+            </div>
+        </div>
     </div>
     
     <script src="./js/index.js"></script>

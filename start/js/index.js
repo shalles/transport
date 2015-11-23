@@ -10,7 +10,9 @@ var revokeBlobURL = (window.URL && URL.revokeObjectURL.bind(URL)) ||
 window.onload = function() {
     // Find the element we want to add handlers to.
     var sender = document.getElementById('sender'),
-        receiver = document.getElementById('receiver');
+        receiver = document.getElementById('receiver'),
+        senderSelector = document.getElementById('senderSelector'),
+        selectTxt = sender.getElementsByClassName('file-name')[0];
     // When the user starts dragging files over the sender, highlight it. 
     sender.ondragenter = function(e) {
         // If the drag is something other than files, ignore it.
@@ -34,6 +36,12 @@ window.onload = function() {
     // When the user drops files on us, get their URLs and display thumbnails. 
     sender.ondrop = function(e) {
         var files = e.dataTransfer.files;
+        fileHandler(files);
+        sender.classList.remove('active');
+        return false;
+    }
+
+    function fileHandler(files){
         for (var i = 0; i < files.length; i++) {
             var file = files[i],
                 type = file.type.split('/')[0],
@@ -62,8 +70,20 @@ window.onload = function() {
                     break;
             }
         }
-        sender.classList.remove('active');
-        return false;
+    }
+
+    senderSelector.onchange = function(){
+        var files = this.files, len = files.length, i = 0;
+        if(len > 0){
+            var txt = '已选中';
+            while(i < len){
+                txt += files[i].name + ' ';
+                i++;
+            }
+            txt += (len > 1 ? '... ' : '') + this.files.length + '个文件';
+            selectTxt.innerHTML = txt;
+        }
+        fileHandler(files);
     }
 };
 

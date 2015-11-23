@@ -21,3 +21,39 @@ html, body, .container{
 .sender.active{
     background-color: rgba(125, 138, 33, .4);
 }
+
+.sender .selector{
+    position: relative;
+    height: 30px;
+    width: 100%;
+    border: 1px solid #8ff;
+    overflow: hidden;
+}
+
+.sender .selector button{
+    float: left;
+    height: 100%;
+    width: 20%;
+    min-width: 80px;
+    background-color: #8dd;
+    border: none;
+    overflow: hidden;
+}
+.sender .selector .file-name{
+    padding-left: 10px;
+    height: 100%;
+    width: auto;
+    line-height: 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.sender .select{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
