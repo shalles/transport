@@ -11,12 +11,14 @@ plugin.excute = function(params){
 plugin.init = function(config){
     utils = config.__utils;
     serverConfig = config.__serverConfig;
-    var wsPath = path.join(__dirname, 'start/js/ws.js'),
-        content = utils.readFile(wsPath),
-        origin = serverConfig.hostname + ":" + serverConfig.port + '?appname=transport';
+    var varjs = path.join(__dirname, 'start/js/var.js'),
+        origin = 'ws://' + serverConfig.hostname + ":" + serverConfig.port + '?appname=transport',
+        content = {
+            wsLinkStr: origin 
+        };
 
-    content = utils.simpleTemplate(content, origin);
-    fs.writeFileSync(wsPath, content);
+    content = 'window.__ST=' + JSON.stringify(content);
+    fs.writeFileSync(varjs, content);
 
     return {
         dirname: __dirname
