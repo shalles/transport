@@ -9,7 +9,7 @@ function fileSize(b){
         b /= 1024;
         i++;
     }
-    return parseInt(b) + map[i];
+    return b.toFixed(2) + map[i];
 }
 // Read the specified text file and 
 function readfile(f) {
