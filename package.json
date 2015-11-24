@@ -18,7 +18,7 @@
   ],
   "servermock": {
     "type": "router",
-    "startbasepath": "./src",
+    "startbasepath": "./start",
     "websocket": {
       "open": true,
       "maxsize": 102400,

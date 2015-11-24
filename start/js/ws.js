@@ -1,4 +1,4 @@
-var wsServer = 'ws://{{ origin }}',
+var wsServer = 'ws://172.21.126.34:8080?appname=transport',
     websocket = new WebSocket(wsServer);
 
 websocket.onopen = function(evt) {

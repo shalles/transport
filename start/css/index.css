@@ -1,8 +1,12 @@
-html, body, .container{
+html, body, .container {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
@@ -11,26 +15,37 @@ html, body, .container{
     justify-content: space-between;
     align-content: stretch;
 }
-.receiver{
+
+.receiver {
     flex: 1 1 50%;
     background-color: #dfe;
 }
-.sender{
+
+.sender {
     flex: 1 1 50%;
 }
-.sender.active{
+
+.sender.active {
     background-color: rgba(125, 138, 33, .4);
 }
 
-.sender .selector{
+.receiver{
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.sender .selector {
+    overflow: hidden;
+}
+
+.sender .selector {
     position: relative;
     height: 30px;
     width: 100%;
     border: 1px solid #8dd;
-    overflow: hidden;
 }
 
-.sender .selector button{
+.sender .selector button {
     float: left;
     height: 100%;
     width: 20%;
@@ -39,7 +54,8 @@ html, body, .container{
     border: none;
     overflow: hidden;
 }
-.sender .selector .file-name{
+
+.sender .selector .file-name {
     padding-left: 10px;
     height: 100%;
     width: auto;
@@ -48,7 +64,8 @@ html, body, .container{
     text-overflow: ellipsis;
     overflow: hidden;
 }
-.sender .select{
+
+.sender .select {
     position: absolute;
     left: 0;
     top: 0;
@@ -56,4 +73,3 @@ html, body, .container{
     height: 100%;
     opacity: 0;
 }
-
