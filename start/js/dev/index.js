@@ -11,10 +11,12 @@ var revokeBlobURL = (window.URL && URL.revokeObjectURL.bind(URL)) ||
 // so that it can handle drops of files
 window.onload = function() {
     // Find the element we want to add handlers to.
+    var $ = function(str){return document.querySelector(str)};
     var sender = document.getElementById('sender'),
         receiver = document.getElementById('receiver'),
         senderSelector = document.getElementById('senderSelector'),
-        selectTxt = sender.getElementsByClassName('file-name')[0];
+        selectTxt = sender.getElementsByClassName('file-name')[0],
+        $btnRowCol = $('#btn-row-col');
     // When the user starts dragging files over the sender, highlight it. 
     sender.ondragenter = function(e) {
         // If the drag is something other than files, ignore it.
@@ -60,13 +62,14 @@ window.onload = function() {
                         revokeBlobURL(filePath);
                     }
                 default:
+                    WS.ws.send(file);
                     // readfile(file);
                     var worker = new Worker('js/fileworker.js');      // Create worker
                     worker.postMessage(file);                     // Copy and send pixels
 
                     // Register a handler to get the worker's response
                     worker.onmessage = function(e) {
-                        WS.sender(e.data);
+                        //WS.ws.send(e.data);
                         console.log(e);
                     }
                     break;
@@ -75,7 +78,16 @@ window.onload = function() {
     }
 
     WS.receiver = function(data){
-        receiver.innerHTML = data;
+        // data.readAsBinaryString(f)
+        var filePath = getBlobURL(data),
+            img = document.createElement('img');
+        img.src = filePath;
+        img.onload = function() {
+            self.width = img.width;
+            self.height = img.height;
+            receiver.appendChild(img);
+            revokeBlobURL(filePath);
+        }
     }
 
     senderSelector.onchange = function(){
@@ -91,5 +103,18 @@ window.onload = function() {
         }
         fileHandler(files);
     }
+
+    var $container = $('.container'), isrow = true;
+    $btnRowCol.addEventListener('click', function(){
+        if(isrow){
+            isrow = false;
+            $container.classList.add('column');
+            $btnRowCol.innerHTML = 'row';
+        } else {
+            isrow = true;
+            $container.classList.remove('column');
+            $btnRowCol.innerHTML = 'column';
+        }
+    })
 };
 

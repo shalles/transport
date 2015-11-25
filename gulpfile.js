@@ -2,21 +2,27 @@
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     fecmd = require('gulp-fecmd');
-var dev = false;
-gulp.task('script', function(){
+
+var release = false;
+function script(){
     var stream = 
-        gulp.src('start/js/dev/index.js')
+        gulp.src(['start/js/dev/index.js', 'start/js/dev/fileworker.js'])
             .pipe(fecmd());
-        stream = (dev ? stream.pipe(uglify()) : stream)
+        stream = (release ? stream.pipe(uglify()) : stream)
             .pipe(gulp.dest('start/js/'));
+}
+
+gulp.task('script', function(){
+    script();
 })
 
 gulp.task('watch', ['script'], function(){
     gulp.watch('start/js/dev/**/**.js', ['script']);
 })
 
-gulp.task('dev', ['watch'], function(){
-    dev = true;
+gulp.task('release', ['script'], function(){
+    release = true;
+    script();
 })
 
 gulp.task('default', ['watch'], function(){})

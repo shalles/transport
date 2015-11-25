@@ -16,6 +16,10 @@ html, body, .container {
     align-content: stretch;
 }
 
+.container.column{
+    flex-direction: column;
+}
+
 .receiver {
     flex: 1 1 50%;
     background-color: #dfe;
@@ -72,4 +76,11 @@ html, body, .container {
     width: 100%;
     height: 100%;
     opacity: 0;
+}
+
+.control-panel{
+    position: absolute;
+    top: 20px;
+    right: 10px;
+
 }

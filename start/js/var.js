@@ -1,1 +1,1 @@
-window.__ST={"wsLinkStr":"ws://172.21.126.34:8080?appname=transport"}
+window.__ST={"wsLinkStr":"ws://172.21.126.34:8880?appname=transport"}

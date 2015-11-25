@@ -10,7 +10,7 @@
         if(!module){ console.log("error: 导出文件有问题", path); return;}
         if(module.fn && !module.exports){
             module.exports = {};
-            module.fn(require, module.exports, module, window);
+            module.fn(require, module.exports, module);
             delete module.fn;
         }
         return module.exports;
@@ -19,7 +19,7 @@
     // file "/start/js/dev/callback.js" to module[startjsdevcallbackjs]
     __G__.__M__["startjsdevcallbackjs"] = {
         path: "/start/js/dev/callback.js",
-        fn: function(require, exports, module, window, undefined) {
+        fn: function(require, exports, module, undefined) {
             
             /**
 			 * Callbacks 
@@ -102,7 +102,7 @@
     // file "/start/js/dev/ws.js" to module[startjsdevwsjs]
     __G__.__M__["startjsdevwsjs"] = {
         path: "/start/js/dev/ws.js",
-        fn: function(require, exports, module, window, undefined) {
+        fn: function(require, exports, module, undefined) {
             
             var Callback = require("/start/js/dev/callback.js");
 			
@@ -110,7 +110,8 @@
 			    websocket = new WebSocket(wsLinkStr),
 			    WS = {
 			        receiver: function(){},
-			        sender: websocket.send
+			        sender: websocket.send,
+			        ws: websocket
 			    };
 			
 			websocket.onopen = function(evt) {
@@ -134,7 +135,7 @@
     // file "/start/js/dev/index.js" to module[startjsdevindexjs]
     __G__.__M__["startjsdevindexjs"] = {
         path: "/start/js/dev/index.js",
-        fn: function(require, exports, module, window, undefined) {
+        fn: function(require, exports, module, undefined) {
             
             var WS = require("/start/js/dev/ws.js");
 			
@@ -149,10 +150,12 @@
 			// so that it can handle drops of files
 			window.onload = function() {
 			    // Find the element we want to add handlers to.
+			    var $ = function(str){return document.querySelector(str)};
 			    var sender = document.getElementById('sender'),
 			        receiver = document.getElementById('receiver'),
 			        senderSelector = document.getElementById('senderSelector'),
-			        selectTxt = sender.getElementsByClassName('file-name')[0];
+			        selectTxt = sender.getElementsByClassName('file-name')[0],
+			        $btnRowCol = $('#btn-row-col');
 			    // When the user starts dragging files over the sender, highlight it. 
 			    sender.ondragenter = function(e) {
 			        // If the drag is something other than files, ignore it.
@@ -198,13 +201,14 @@
 			                        revokeBlobURL(filePath);
 			                    }
 			                default:
+			                    WS.ws.send(file);
 			                    // readfile(file);
 			                    var worker = new Worker('js/fileworker.js');      // Create worker
 			                    worker.postMessage(file);                     // Copy and send pixels
 			
 			                    // Register a handler to get the worker's response
 			                    worker.onmessage = function(e) {
-			                        WS.sender(e.data);
+			                        //WS.ws.send(e.data);
 			                        console.log(e);
 			                    }
 			                    break;
@@ -213,7 +217,16 @@
 			    }
 			
 			    WS.receiver = function(data){
-			        receiver.innerHTML = data;
+			        // data.readAsBinaryString(f)
+			        var filePath = getBlobURL(data),
+			            img = document.createElement('img');
+			        img.src = filePath;
+			        img.onload = function() {
+			            self.width = img.width;
+			            self.height = img.height;
+			            receiver.appendChild(img);
+			            revokeBlobURL(filePath);
+			        }
 			    }
 			
 			    senderSelector.onchange = function(){
@@ -229,6 +242,19 @@
 			        }
 			        fileHandler(files);
 			    }
+			
+			    var $container = $('.container'), isrow = true;
+			    $btnRowCol.addEventListener('click', function(){
+			        if(isrow){
+			            isrow = false;
+			            $container.classList.add('column');
+			            $btnRowCol.innerHTML = 'row';
+			        } else {
+			            isrow = true;
+			            $container.classList.remove('column');
+			            $btnRowCol.innerHTML = 'column';
+			        }
+			    })
 			};
 			
 			

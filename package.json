@@ -21,7 +21,7 @@
     "startbasepath": "./start",
     "websocket": {
       "open": true,
-      "maxsize": 102400,
+      "maxsize": 104857600,
       "encoding": "utf8",
       "originReg": "",
       "sameOrigin": true,

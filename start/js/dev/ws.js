@@ -4,7 +4,8 @@ var wsLinkStr = __ST.wsLinkStr || 'ws://127.0.0.1',
     websocket = new WebSocket(wsLinkStr),
     WS = {
         receiver: function(){},
-        sender: websocket.send
+        sender: websocket.send,
+        ws: websocket
     };
 
 websocket.onopen = function(evt) {
